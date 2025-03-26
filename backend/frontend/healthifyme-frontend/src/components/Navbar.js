@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 
 const Navbar = () => {
     const [user, setUser] = useState(null);
-    const [cookies, removeCookie] = useCookies(['user']);
+    const [cookies, , removeCookie] = useCookies(['user']);
     const navigate = useNavigate();
 
     useEffect(() => {

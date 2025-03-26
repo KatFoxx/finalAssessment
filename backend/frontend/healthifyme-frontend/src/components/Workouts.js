@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Workouts = () => {
   // Dummy data for exercises
-  const exercises = [
-    { id: 1, name: 'Push-up', type: 'Strength', muscleGroups: 'Chest, Triceps' },
-    { id: 2, name: 'Running', type: 'Cardio', muscleGroups: 'Legs, Core' },
-    // ... add more exercises
-  ];
+  const [exercises, setExercises] = useState([])
+  const api = process.env.API
 
+  useEffect(() => {
+    const fetchExercises = async () => {
+      try {
+        const response = await fetch(`${api}/exercises/`);
+        const data = await response.json();
+
+        if (response.ok) {
+          setExercises(data);
+        }
+      } catch (error) {
+        console.log("error:", error.message);
+      }
+    };
+
+    fetchExercises();
+  }, []);
+  
   return (
     <div className="container mt-4">
       <h2>Exercises</h2>
@@ -19,7 +33,7 @@ const Workouts = () => {
               <div className="card-body">
                 <h5 className="card-title">{exercise.name}</h5>
                 <p className="card-text">
-                  <strong>Type:</strong> {exercise.type} <br />
+                  <strong>Type:</strong> {exercise.category} <br />
                   <strong>Muscle Groups:</strong> {exercise.muscleGroups}
                 </p>
               </div>
@@ -29,6 +43,9 @@ const Workouts = () => {
       </div>
     </div>
   );
-};
+
+}
+
+
 
 export default Workouts;

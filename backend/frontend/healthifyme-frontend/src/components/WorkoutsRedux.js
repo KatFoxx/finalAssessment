@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; // Import Redux hooks
 import { useCookies } from 'react-cookie';
-import { fetchWorkoutsRequest } from '../redux/actions/workoutActions'; // Import the action
+import { fetchWorkoutsRequest } from '../redux/actions/workoutActions';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; 
 
 const Workouts = () => {
   const dispatch = useDispatch(); // Initialize the Redux dispatcher
@@ -18,7 +19,7 @@ const Workouts = () => {
   useEffect(() => {
     const fetchExercises = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/exercises/`);
+        const response = await fetch(`${API_BASE_URL}/exercises/`);
         const data = await response.json();
 
         if (response.ok) {
@@ -60,7 +61,7 @@ const Workouts = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/api/workouts/add`, {
+      const response = await fetch(`${API_BASE_URL}/workouts/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

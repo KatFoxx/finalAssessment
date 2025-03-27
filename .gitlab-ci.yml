@@ -55,4 +55,5 @@ job_deploy:
   stage: deploy
   script:
     - echo "Deploying the application"
-
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

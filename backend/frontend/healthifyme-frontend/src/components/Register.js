@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-//import { configDotenv } from "dotenv";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 function Register() {
 
@@ -15,7 +15,7 @@ function Register() {
     const [, setCookie] = useCookies(['user'])
     const [message, setMessage] = useState("")
     const navigate = useNavigate();
-    // const api = process.env.API
+
 
     const handlePass = (e) => {
         setRepeatPass(e.target.value)
@@ -35,7 +35,7 @@ function Register() {
             return
         }
         try {
-            const response = await fetch("http://localhost:5000/api/auth/register",
+            const response = await fetch(`${API_BASE_URL}/auth/register`,
                 {
                     method: "POST", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data)
@@ -43,17 +43,19 @@ function Register() {
             const registration = await response.json()
             setMessage(registration)
             if (response.ok) {
-                const loginResponse = await fetch("http://localhost:5000/api/auth/login", {
-                    method: "POST", headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ username: data.username, password: data.password })
-                })
-                const user = await loginResponse.json()
-                if (loginResponse.ok) {
+                try {
+                    const loginResponse = await fetch(`${API_BASE_URL}/auth/login`, {
+                        method: "POST", headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ username: data.username, password: data.password })
+                    })
+                    const user = await loginResponse.json();
                     setCookie('user', user, {
                         path: "/"
                     });
-                    navigate("/workout")
+                } catch (error) {
+                    console.error(error, error.message)
                 }
+                navigate("/workout")
             }
         } catch (error) {
             console.error(error);

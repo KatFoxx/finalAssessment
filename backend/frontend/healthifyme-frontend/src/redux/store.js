@@ -1,12 +1,15 @@
-import { configureStore, applyMiddleware, combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-import rootSaga from './sagas/rootSaga';
-import authReducer from './reducers/authReducer';
+import rootReducer from './reducers/rootReducer';
+import workoutSaga from './sagas/workoutSaga';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export const store = configureStore({ reducer: {}, auth: authReducer, middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware) });
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
+});
 
-sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(workoutSaga);
 
 export default store;

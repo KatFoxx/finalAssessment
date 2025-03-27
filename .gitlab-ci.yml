@@ -1,3 +1,13 @@
+# Workflow:
+# - on MR creation: run build and test stages. Pipeline needs to finish successfully before merge is allowed
+# - on commit to main: run CI (build + test) and CD (deploy) part
+# Options for improvement:
+# - use semantic versioning
+# - separate pipeline into 'CI' (triggers automatically after commit to main)...
+#   - push build artifacts into 'Artifacts' storage and give each a correctly increased version number + release notes (based on commit messages)
+# - and CD part (triggers either automatically or manually to deploy the latest or a selected version onto the target system)
+# - ideally, have staging systems such as pre-prod or qa for testing purposes
+
 stages:
   - build
   - test
@@ -9,13 +19,24 @@ job_build:
     - echo "Building the project"
     - ls -al
     - pwd
+    - npm ci
+    - npm run build
+    - ls -al build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 job_test:
   stage: test
   script:
     - echo "Running tests"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 job_deploy:
   stage: deploy
   script:
     - echo "Deploying the application"
+    - cd backend/frontend/healthifyme-frontend
+    - ls -al

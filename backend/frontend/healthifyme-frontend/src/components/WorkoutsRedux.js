@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'; // Import Redux hooks
 import { useCookies } from 'react-cookie';
+import { fetchWorkoutsRequest } from '../redux/actions/workoutActions'; // Import the action
 
 const Workouts = () => {
+  const dispatch = useDispatch(); // Initialize the Redux dispatcher
+  const { workouts, loading, error } = useSelector((state) => state.workout); // Access workouts state from Redux
+
   const [exercises, setExercises] = useState([]);
-  const [workouts, setWorkouts] = useState([]);
   const [workoutTitle, setWorkoutTitle] = useState('');
   const [workoutDescription, setWorkoutDescription] = useState('');
   const [selectedExercises, setSelectedExercises] = useState([]);
-  const [expandedWorkout, setExpandedWorkout] = useState(null); // Tracks which workout is expanded
+  const [expandedWorkout, setExpandedWorkout] = useState(null);
   const [message, setMessage] = useState('');
   const [cookies] = useCookies(['user']);
 
@@ -21,35 +25,24 @@ const Workouts = () => {
           setExercises(data);
         }
       } catch (error) {
-        console.log("error:", error.message);
+        console.log('error:', error.message);
       }
     };
 
-    const fetchWorkouts = async () => {
-      try {
-        const userId = cookies.user?.id; // Retrieve user ID from cookies
-        if (!userId) return;
-
-        const response = await fetch(`http://localhost:5000/api/workouts?user=${userId}`);
-        const data = await response.json();
-
-        if (response.ok) {
-          setWorkouts(data);
-        }
-      } catch (error) {
-        console.log("error:", error.message);
-      }
-    };
+    // Dispatch the Redux action to fetch workouts
+    const userId = cookies.user?.id; // Retrieve user ID from cookies
+    if (userId) {
+      dispatch(fetchWorkoutsRequest(userId)); // Dispatch the action
+    }
 
     fetchExercises();
-    fetchWorkouts();
-  }, [cookies]);
+  }, [dispatch, cookies]);
 
   const handleExerciseSelect = (exerciseId) => {
     if (!selectedExercises.includes(exerciseId)) {
       setSelectedExercises([...selectedExercises, exerciseId]);
     } else {
-      setSelectedExercises(selectedExercises.filter(id => id !== exerciseId));
+      setSelectedExercises(selectedExercises.filter((id) => id !== exerciseId));
     }
   };
 
@@ -76,17 +69,22 @@ const Workouts = () => {
       });
 
       if (response.ok) {
-        const savedWorkout = await response.json();
-        setWorkouts([...workouts, savedWorkout]); // Add the new workout to the list
+        await response.json();
         setMessage('Workout saved successfully!');
         setWorkoutTitle('');
         setWorkoutDescription('');
         setSelectedExercises([]);
+
+        // Dispatch the action to fetch workouts again
+        const userId = cookies.user?.id;
+        if (userId) {
+          dispatch(fetchWorkoutsRequest(userId));
+        }
       } else {
         setMessage('Failed to save workout.');
       }
     } catch (error) {
-      console.log("error:", error.message);
+      console.log('error:', error.message);
       setMessage('An error occurred while saving the workout.');
     }
   };
@@ -119,7 +117,7 @@ const Workouts = () => {
       </div>
       <h3>Select Exercises</h3>
       <div className="row">
-        {exercises.map(exercise => (
+        {exercises.map((exercise) => (
           <div key={exercise._id} className="col-md-4">
             <div className={`card mb-3 ${selectedExercises.includes(exercise._id) ? 'border-primary' : ''}`}>
               <img src="https://via.placeholder.com/150" className="card-img-top" alt={exercise.name} />
@@ -144,8 +142,10 @@ const Workouts = () => {
       {message && <div className="alert alert-info mt-3">{message}</div>}
 
       <h2 className="mt-5">Saved Workouts</h2>
+      {loading && <p>Loading workouts...</p>}
+      {error && <p>Error: {error}</p>}
       <div className="row">
-        {workouts.map(workout => (
+        {workouts.map((workout) => (
           <div key={workout._id} className="col-md-4">
             <div className="card mb-3">
               <div className="card-body">
@@ -162,7 +162,7 @@ const Workouts = () => {
                 </button>
                 {expandedWorkout === workout._id && (
                   <ul className="mt-3">
-                    {workout.exercises.map(exercise => (
+                    {workout.exercises.map((exercise) => (
                       <li key={exercise._id}>{exercise.name}</li>
                     ))}
                   </ul>

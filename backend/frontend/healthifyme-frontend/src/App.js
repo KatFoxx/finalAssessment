@@ -5,9 +5,11 @@ import Home from './components/Home';
 import Login from './components/Login';
 import About from './components/About';
 import Contact from './components/Contact'
-import Workouts from './components/Workouts';
+// import Workouts from './components/Workouts';
+import WorkoutsRedux from './components/WorkoutsRedux';
 import Register from './components/Register';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   // const [cookies, setCookies] = useCookies(['user'])
@@ -22,7 +24,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/workout" element={<Workouts />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/workout" element={<WorkoutsRedux />} />
+        </Route>
       </Routes>
     </>
   );

@@ -47,7 +47,7 @@ exports.login = async (req, res) => {
       { expiresIn: '1h' }, // Set an expiration time for the token
       (err, token) => {
         if (err) throw err; // Handle token generation errors
-        res.json({ token, username: user.username }); // Respond with the generated token and username
+        res.json({ token, username: user.username, id: user.id }); // Respond with the generated token and username
       }
     );
   } catch (err) {

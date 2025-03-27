@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 
 const Workouts = () => {
   const [exercises, setExercises] = useState([]);
+  const [workouts, setWorkouts] = useState([]);
   const [workoutTitle, setWorkoutTitle] = useState('');
   const [workoutDescription, setWorkoutDescription] = useState('');
   const [selectedExercises, setSelectedExercises] = useState([]);
+  const [expandedWorkout, setExpandedWorkout] = useState(null); // Tracks which workout is expanded
   const [message, setMessage] = useState('');
+  const [cookies] = useCookies(['user']);
 
   useEffect(() => {
     const fetchExercises = async () => {
@@ -21,8 +25,25 @@ const Workouts = () => {
       }
     };
 
+    const fetchWorkouts = async () => {
+      try {
+        const userId = cookies.user?.id; // Retrieve user ID from cookies
+        if (!userId) return;
+
+        const response = await fetch(`http://localhost:5000/api/workouts?user=${userId}`);
+        const data = await response.json();
+
+        if (response.ok) {
+          setWorkouts(data);
+        }
+      } catch (error) {
+        console.log("error:", error.message);
+      }
+    };
+
     fetchExercises();
-  }, []);
+    fetchWorkouts();
+  }, [cookies]);
 
   const handleExerciseSelect = (exerciseId) => {
     if (!selectedExercises.includes(exerciseId)) {
@@ -42,7 +63,7 @@ const Workouts = () => {
       title: workoutTitle,
       description: workoutDescription,
       exercises: selectedExercises,
-      user: "USER_ID_PLACEHOLDER" // Replace with the actual user ID from your authentication system
+      user: cookies.user?.id, // Include user ID from cookies
     };
 
     try {
@@ -55,6 +76,8 @@ const Workouts = () => {
       });
 
       if (response.ok) {
+        const savedWorkout = await response.json();
+        setWorkouts([...workouts, savedWorkout]); // Add the new workout to the list
         setMessage('Workout saved successfully!');
         setWorkoutTitle('');
         setWorkoutDescription('');
@@ -66,6 +89,10 @@ const Workouts = () => {
       console.log("error:", error.message);
       setMessage('An error occurred while saving the workout.');
     }
+  };
+
+  const toggleWorkoutExercises = (workoutId) => {
+    setExpandedWorkout(expandedWorkout === workoutId ? null : workoutId);
   };
 
   return (
@@ -115,6 +142,36 @@ const Workouts = () => {
       </div>
       <button className="btn btn-success mt-3" onClick={handleSaveWorkout}>Save Workout</button>
       {message && <div className="alert alert-info mt-3">{message}</div>}
+
+      <h2 className="mt-5">Saved Workouts</h2>
+      <div className="row">
+        {workouts.map(workout => (
+          <div key={workout._id} className="col-md-4">
+            <div className="card mb-3">
+              <div className="card-body">
+                <h5 className="card-title">{workout.title}</h5>
+                <p className="card-text">{workout.description}</p>
+                <p className="card-text">
+                  <strong>Exercises:</strong> {workout.exercises.length}
+                </p>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => toggleWorkoutExercises(workout._id)}
+                >
+                  {expandedWorkout === workout._id ? 'Hide Exercises' : 'Show Exercises'}
+                </button>
+                {expandedWorkout === workout._id && (
+                  <ul className="mt-3">
+                    {workout.exercises.map(exercise => (
+                      <li key={exercise._id}>{exercise.name}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

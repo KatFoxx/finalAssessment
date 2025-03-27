@@ -2,6 +2,8 @@
 # - on MR creation: run build and test stages. Pipeline needs to finish successfully before merge is allowed
 # - on commit to main: run CI (build + test) and CD (deploy) part
 # Options for improvement:
+# - Use docker build images with preinstalled software of required build tools
+# - Run front- and backend build and test in parallel instead of sequentially
 # - use semantic versioning
 # - separate pipeline into 'CI' (triggers automatically after commit to main)...
 #   - push build artifacts into 'Artifacts' storage and give each a correctly increased version number + release notes (based on commit messages)
@@ -13,23 +15,38 @@ stages:
   - test
   - deploy
 
+# Optional: Check for presence 
+
 job_build:
   stage: build
   script:
     - echo "Building the project"
     - ls -al
     - pwd
+    # Frontend
+    - cd backend/frontend/healthifyme-frontend
+    - ls -al
     - npm ci
     - npm run build
     - ls -al build
+    # Backend
+    - cd ../..
+    - npm ci
+    - npm run build
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' // && Target Branch == $CI_DEFAULT_BRANCH
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 job_test:
   stage: test
   script:
     - echo "Running tests"
+    # Frontend
+    - cd backend/frontend/healthifyme-frontend
+    - npm test
+    # Backend
+    - cd ../..
+    - npm test
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
@@ -38,5 +55,4 @@ job_deploy:
   stage: deploy
   script:
     - echo "Deploying the application"
-    - cd backend/frontend/healthifyme-frontend
-    - ls -al
+

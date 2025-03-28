@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 
 const Navbar = () => {
     const [user, setUser] = useState(null);
-    const [cookies, removeCookie] = useCookies(['user']);
+    const [cookies, , removeCookie] = useCookies(['user']);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -51,7 +51,7 @@ const Navbar = () => {
                             <Link to="/workout">Workouts</Link>
                         </li>
                         <li>
-                            <button onClick={handleLogout}>
+                            <button onClick={handleLogout} className="btn logout">
                                 Logout
                             </button>
                         </li>

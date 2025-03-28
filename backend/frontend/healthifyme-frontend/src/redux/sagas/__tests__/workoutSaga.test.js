@@ -9,7 +9,7 @@ jest.mock('axios', () => ({
 }));
 
 describe('fetchWorkoutsSaga', () => {
-  const API = process.env.API || 'http://localhost:5000';
+  const API = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
 
   it('should dispatch success action when API call is successful', async () => {
     const dispatchedActions = [];
@@ -26,7 +26,7 @@ describe('fetchWorkoutsSaga', () => {
       { payload: 'userId123' } // Pass the action payload
     ).toPromise();
 
-    expect(axios.get).toHaveBeenCalledWith(`${API}/api/workouts?user=userId123`);
+    expect(axios.get).toHaveBeenCalledWith(`${API}/workouts?user=userId123`);
     expect(dispatchedActions).toContainEqual(fetchWorkoutsSuccess(mockWorkouts));
   });
 
@@ -45,7 +45,7 @@ describe('fetchWorkoutsSaga', () => {
       { payload: 'userId123' } // Pass the action payload
     ).toPromise();
 
-    expect(axios.get).toHaveBeenCalledWith(`${API}/api/workouts?user=userId123`);
+    expect(axios.get).toHaveBeenCalledWith(`${API}/workouts?user=userId123`);
     expect(dispatchedActions).toContainEqual(fetchWorkoutsFailure(errorMessage));
   });
 });

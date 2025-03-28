@@ -26,7 +26,7 @@ function Contact() {
                 <label htmlFor="email">E-Mail:</label>
                 <input type="text" name="email" id="email" placeholder="email@example.com" value={data.email} onChange={handleChange}></input>
                 <label htmlFor="message">Message:</label>
-                <textarea name="message" placeholder="Please enter your message here" value={data.message} onChange={handleChange}></textarea>
+                <textarea name="message" id="message" placeholder="Please enter your message here" value={data.message} onChange={handleChange}></textarea>
                 <button type="submit">Send Message</button>
             </form>
             <p>{message}</p>

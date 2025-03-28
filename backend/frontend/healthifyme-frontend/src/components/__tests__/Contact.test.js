@@ -1,51 +1,61 @@
-import { runSaga } from 'redux-saga';
-import axios from 'axios';
-import { fetchWorkoutsSaga } from '../../redux/sagas/workoutSaga';
-import { fetchWorkoutsSuccess, fetchWorkoutsFailure } from '../../redux/actions/workoutActions';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import Contact from '../Contact';
 
-// Mock axios
-jest.mock('axios', () => ({
-  get: jest.fn(),
-}));
+describe('Contact Component', () => {
 
-describe('fetchWorkoutsSaga', () => {
-  const API = process.env.API || 'http://localhost:5000';
+    it('should render the form fields correctly', () => {
+        render(<Contact />);
 
-  it('should dispatch success action when API call is successful', async () => {
-    const dispatchedActions = [];
-    const mockWorkouts = [{ id: 1, title: 'Workout 1' }];
+        // Check if the form elements are rendered correctly
+        expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/e-mail/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/message/i)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /send message/i })).toBeInTheDocument();
+    });
 
-    // Mock successful API response
-    axios.get.mockResolvedValueOnce({ data: mockWorkouts });
+    it('should update the state when input fields change', () => {
+        render(<Contact />);
 
-    await runSaga(
-      {
-        dispatch: (action) => dispatchedActions.push(action),
-      },
-      fetchWorkoutsSaga, // Pass the generator function
-      { payload: 'userId123' } // Pass the action payload
-    ).toPromise();
+        const nameInput = screen.getByLabelText(/name/i);
+        const emailInput = screen.getByLabelText(/e-mail/i);
+        const messageInput = screen.getByLabelText(/message/i);
 
-    expect(axios.get).toHaveBeenCalledWith(`${API}/api/workouts?user=userId123`);
-    expect(dispatchedActions).toContainEqual(fetchWorkoutsSuccess(mockWorkouts));
-  });
+        // Simulate user input
+        fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+        fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
+        fireEvent.change(messageInput, { target: { value: 'Hello there!' } });
 
-  it('should dispatch failure action when API call fails', async () => {
-    const dispatchedActions = [];
-    const errorMessage = 'API error';
+        // Check if the state is updated
+        expect(nameInput.value).toBe('John Doe');
+        expect(emailInput.value).toBe('john@example.com');
+        expect(messageInput.value).toBe('Hello there!');
+    });
 
-    // Mock failed API response
-    axios.get.mockRejectedValueOnce(new Error(errorMessage));
+    it('should display a success message after form submission', async () => {
+        render(<Contact />);
 
-    await runSaga(
-      {
-        dispatch: (action) => dispatchedActions.push(action),
-      },
-      fetchWorkoutsSaga, // Pass the generator function
-      { payload: 'userId123' } // Pass the action payload
-    ).toPromise();
+        const nameInput = screen.getByLabelText(/name/i);
+        const emailInput = screen.getByLabelText(/e-mail/i);
+        const messageInput = screen.getByLabelText(/message/i);
+        const submitButton = screen.getByRole('button', { name: /send message/i });
 
-    expect(axios.get).toHaveBeenCalledWith(`${API}/api/workouts?user=userId123`);
-    expect(dispatchedActions).toContainEqual(fetchWorkoutsFailure(errorMessage));
-  });
+        // Simulate user input
+        fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+        fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
+        fireEvent.change(messageInput, { target: { value: 'Hello there!' } });
+
+        // Simulate form submission
+        fireEvent.click(submitButton);
+
+        // Wait for success message to appear
+        await waitFor(() => {
+            expect(screen.getByText(/message sent!/i)).toBeInTheDocument();
+        });
+
+        // Check that input fields are cleared after submission
+        expect(nameInput.value).toBe('');
+        expect(emailInput.value).toBe('');
+        expect(messageInput.value).toBe('');
+    });
+
 });

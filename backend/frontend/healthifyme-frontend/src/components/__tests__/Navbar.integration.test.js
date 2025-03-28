@@ -22,6 +22,7 @@ describe('Navbar Integration Test', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     useNavigate.mockReturnValue(mockNavigate);
+    jest.resetModules();
   });
 
   test('renders common links', () => {

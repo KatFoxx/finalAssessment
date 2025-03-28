@@ -21,8 +21,9 @@ describe('Navbar Component', () => {
 
   beforeEach(() => {
     // Clear all mocks before each test
-    jest.clearAllMocks();
     useNavigate.mockReturnValue(mockNavigate);
+    jest.clearAllMocks();
+    localStorage.clear();
   });
 
   test('renders common links', () => {

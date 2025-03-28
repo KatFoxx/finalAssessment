@@ -7,7 +7,9 @@ import { MemoryRouter } from 'react-router-dom';
 global.fetch = jest.fn();
 
 beforeEach(() => {
-  fetch.mockClear();
+  jest.clearAllMocks();
+  global.fetch.mockClear();
+  localStorage.clear();
 });
 
 test('renders the register form correctly', () => {

@@ -66,15 +66,15 @@ function Register() {
         <main>
             <form aria-label="Register User Form" onSubmit={handleSubmit}>
                 <label htmlFor="name">Name:</label>
-                <input type="text" name="name" id="name" onChange={handleChange} value={data.name}></input>
+                <input type="text" id="name" name="name" onChange={handleChange} value={data.name}></input>
                 <label htmlFor="email">Email:</label>
-                <input type="email" name="email" id="email" onChange={handleChange} value={data.email}></input>
+                <input type="email" id="email" name="email" onChange={handleChange} value={data.email}></input>
                 <label htmlFor="username">Username:</label>
-                <input type="text" name="username" id="username" onChange={handleChange} value={data.username}></input>
+                <input type="text" id="username" name="username" onChange={handleChange} value={data.username}></input>
                 <label htmlFor="password">Password:</label>
-                <input type="password" name="password" id="password" onChange={handleChange} value={data.password}></input>
+                <input type="password" id="password" name="password" onChange={handleChange} value={data.password}></input>
                 <label htmlFor="repeatPassword">Repeat Password:</label>
-                <input type="password" name="repeatPassword" id="repeatPassword" onChange={handlePass} value={repeatPass}></input>
+                <input type="password" id="repeatPassword" name="repeatPassword" onChange={handlePass} value={repeatPass}></input>
                 <button type="submit" name="register">Register User</button>
             </form>
             <p>{message?.msg || message}</p>

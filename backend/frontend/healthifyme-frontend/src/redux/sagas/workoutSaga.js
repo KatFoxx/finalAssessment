@@ -6,9 +6,11 @@ import {
   fetchWorkoutsFailure,
 } from '../actions/workoutActions';
 
-function* fetchWorkoutsSaga(action) {
+const API = process.env.REACT_APP_API_BASE_URL;
+
+export function* fetchWorkoutsSaga(action) {
   try {
-    const response = yield call(axios.get, `http://localhost:5000/api/workouts?user=${action.payload}`);
+    const response = yield call(axios.get, `${API}/workouts?user=${action.payload}`);
     yield put(fetchWorkoutsSuccess(response.data));
   } catch (error) {
     yield put(fetchWorkoutsFailure(error.message));

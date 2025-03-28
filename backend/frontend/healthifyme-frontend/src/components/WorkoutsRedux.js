@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; // Import Redux hooks
 import { useCookies } from 'react-cookie';
 import { fetchWorkoutsRequest } from '../redux/actions/workoutActions';
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const Workouts = () => {
   const dispatch = useDispatch(); // Initialize the Redux dispatcher
@@ -97,7 +97,7 @@ const Workouts = () => {
   return (
     <div className="container mt-4">
       <h2>Create a Workout</h2>
-      <div className="mb-3">
+      <div className="workout">
         <label htmlFor="workoutTitle" className="form-label">Workout Title</label>
         <input
           type="text"
@@ -107,7 +107,7 @@ const Workouts = () => {
           onChange={(e) => setWorkoutTitle(e.target.value)}
         />
       </div>
-      <div className="mb-3">
+      <div className="workout">
         <label htmlFor="workoutDescription" className="form-label">Workout Description</label>
         <textarea
           id="workoutDescription"
@@ -121,7 +121,6 @@ const Workouts = () => {
         {exercises.map((exercise) => (
           <div key={exercise._id} className="col-md-4">
             <div className={`card mb-3 ${selectedExercises.includes(exercise._id) ? 'border-primary' : ''}`}>
-              <img src="https://via.placeholder.com/150" className="card-img-top" alt={exercise.name} />
               <div className="card-body">
                 <h5 className="card-title">{exercise.name}</h5>
                 <p className="card-text">
@@ -139,7 +138,7 @@ const Workouts = () => {
           </div>
         ))}
       </div>
-      <button className="btn btn-success mt-3" onClick={handleSaveWorkout}>Save Workout</button>
+      <button className="btn save" onClick={handleSaveWorkout}>Save Workout</button>
       {message && <div className="alert alert-info mt-3">{message}</div>}
 
       <h2 className="mt-5">Saved Workouts</h2>

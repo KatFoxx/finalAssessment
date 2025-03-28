@@ -43,9 +43,9 @@ function Login() {
         <main>
             <form name="loginForm" aria-label="Login Form" onSubmit={handleSubmit}>
                 <label htmlFor="username">Username:</label>
-                <input type="text" name="username" value={data.username} onChange={handleChange}></input>
+                <input type="text" id="username" name="username" value={data.username} onChange={handleChange}></input>
                 <label htmlFor="password">Password:</label>
-                <input type="password" name="password" value={data.password} onChange={handleChange}></input>
+                <input type="password" id="password" name="password" value={data.password} onChange={handleChange}></input>
                 <button type="submit" name="submit">Login</button>
             </form>
         </main>

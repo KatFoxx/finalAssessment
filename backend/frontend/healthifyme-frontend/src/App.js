@@ -10,6 +10,8 @@ import Navbar from './components/Navbar';
 import Impressum from './components/Impressum'
 import CookieNotice from './components/CookieNotice';
 import ProtectedRoute from './components/ProtectedRoute';
+import './App.css'
+import CookiePolicy from './components/CookiePolicy';
 
 function App() {
   // const [cookies, setCookies] = useCookies(['user'])
@@ -25,6 +27,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/cookie-policy" element={<CookiePolicy />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/workout" element={<WorkoutsRedux />} />
         </Route>

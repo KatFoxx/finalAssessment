@@ -22,7 +22,7 @@ const CookieNotice = () => {
   return (
     <div>
       <div>
-        <p>
+        <p className='cookie-policy'>
           This website uses cookies that are essential for the operation of the site. By continuing to use our site, you agree to the use of these cookies.
         </p>
         <button onClick={handleAcceptCookies}>

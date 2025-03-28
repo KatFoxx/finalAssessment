@@ -7,6 +7,7 @@ import Contact from './components/Contact'
 import WorkoutsRedux from './components/WorkoutsRedux';
 import Register from './components/Register';
 import Navbar from './components/Navbar';
+import Impressum from './components/Impressum'
 import CookieNotice from './components/CookieNotice';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/workout" element={<WorkoutsRedux />} />
         </Route>
       </Routes>
+      <Impressum />
     </>
   );
 }

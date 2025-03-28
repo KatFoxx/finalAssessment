@@ -1,14 +1,13 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-// import { useCookies } from "react-cookie";
 import Home from './components/Home';
 import Login from './components/Login';
 import About from './components/About';
 import Contact from './components/Contact'
-// import Workouts from './components/Workouts';
 import WorkoutsRedux from './components/WorkoutsRedux';
 import Register from './components/Register';
 import Navbar from './components/Navbar';
+import CookieNotice from './components/CookieNotice';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -17,6 +16,7 @@ function App() {
 
   return (
     <>
+      <CookieNotice />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

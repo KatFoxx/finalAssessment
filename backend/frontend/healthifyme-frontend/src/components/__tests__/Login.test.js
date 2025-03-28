@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Login from '../Login';
 
@@ -28,9 +28,9 @@ describe('Login Component', () => {
 
   it('renders the login form correctly', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Login />
-      </BrowserRouter>
+      </MemoryRouter>
     );
 
     // Check if the form elements are rendered
@@ -41,9 +41,9 @@ describe('Login Component', () => {
 
   it('updates input fields on change', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Login />
-      </BrowserRouter>
+      </MemoryRouter>
     );
 
     // Simulate typing in the username field
@@ -67,9 +67,9 @@ describe('Login Component', () => {
     );
 
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Login />
-      </BrowserRouter>
+      </MemoryRouter>
     );
 
     // Simulate typing in the form fields
@@ -108,9 +108,9 @@ describe('Login Component', () => {
     );
 
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Login />
-      </BrowserRouter>
+      </MemoryRouter>
     );
 
     // Simulate typing in the form fields

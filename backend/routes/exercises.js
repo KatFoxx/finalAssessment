@@ -4,7 +4,7 @@ const Exercise = require('../models/Exercise');
 
 router.get("/", async (req, res) => {
     try {
-        const exercises = await Exercise.find().populate("name", "description", "category");
+        const exercises = await Exercise.find().select("name description category muscleGroups");
         res.json(exercises);
     } catch (error) {
         res.status(500).json({ error: error.message });

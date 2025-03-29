@@ -15,7 +15,7 @@ const Workouts = () => {
   const [expandedWorkout, setExpandedWorkout] = useState(null);
   const [message, setMessage] = useState('');
   const [cookies] = useCookies(['user']);
-
+  // Fetch Workouts on Mounting of the Component
   useEffect(() => {
     const fetchExercises = async () => {
       try {
@@ -57,7 +57,7 @@ const Workouts = () => {
       title: workoutTitle,
       description: workoutDescription,
       exercises: selectedExercises,
-      user: cookies.user?.id, // Include user ID from cookies
+      user: cookies.user?.id, 
     };
 
     try {

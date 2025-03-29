@@ -5,6 +5,7 @@ const ExerciseSchema = new mongoose.Schema({
     difficulty: { type: String, required: true },
     category: { type: String, required: true },
     weight: { type: Number },
+    muscleGroups: { type: String, required: true },
     description: { type: String, required: true }
 });
 

@@ -90,6 +90,28 @@ const Workouts = () => {
     }
   };
 
+  const handleDeleteWorkout = async (workoutId) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/workouts/${workoutId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setMessage('Workout deleted successfully!');
+        // Dispatch the action to fetch workouts again
+        const userId = cookies.user?.id;
+        if (userId) {
+          dispatch(fetchWorkoutsRequest(userId));
+        }
+      } else {
+        setMessage('Failed to delete workout.');
+      }
+    } catch (error) {
+      console.log('error:', error.message);
+      setMessage('An error occurred while deleting the workout.');
+    }
+  };
+
   const toggleWorkoutExercises = (workoutId) => {
     setExpandedWorkout(expandedWorkout === workoutId ? null : workoutId);
   };
@@ -167,6 +189,12 @@ const Workouts = () => {
                     ))}
                   </ul>
                 )}
+                <button
+                  className="btn btn-danger mt-2"
+                  onClick={() => handleDeleteWorkout(workout._id)}
+                >
+                  Delete Workout
+                </button>
               </div>
             </div>
           </div>

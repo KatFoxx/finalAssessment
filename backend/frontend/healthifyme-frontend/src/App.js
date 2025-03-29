@@ -14,9 +14,6 @@ import './App.css'
 import CookiePolicy from './components/CookiePolicy';
 
 function App() {
-  // const [cookies, setCookies] = useCookies(['user'])
-
-
   return (
     <>
       <CookieNotice />

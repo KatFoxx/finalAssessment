@@ -8,7 +8,7 @@ function Login() {
     const navigate = useNavigate();
     const [data, setData] = useState({ username: "", password: "" })
     const [, setCookie] = useCookies(['user'])
-
+    // Handle Data Changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevData) => ({
@@ -16,7 +16,7 @@ function Login() {
             [name]: value,
         }));
     };
-
+    // Handle Submission Events, logging in
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {

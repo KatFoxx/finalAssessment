@@ -5,8 +5,7 @@ const Exercise = require('../models/Exercise');
 
 router.get("/", async (req, res) => {
     try {
-        // Fetch all exercises from the database and populate specific fields for better readability in the response.
-        const exercises = await Exercise.find().populate("name", "description", "category", "muscleGroups");
+        const exercises = await Exercise.find().select("name description category muscleGroups");
         res.json(exercises);
     } catch (error) {
         // Sending a 500 status code ensures the client knows there was a server-side error.

@@ -27,7 +27,6 @@ function Login() {
                     body: JSON.stringify(data)
                 });
             const user = await response.json();
-            console.log(user)
             if (response.ok) {
                 setCookie('user', user, {
                     path: "/"

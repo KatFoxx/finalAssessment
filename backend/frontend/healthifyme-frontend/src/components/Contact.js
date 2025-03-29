@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function Contact() {
     const [data, setData] = useState({ name: "", email: "", message: "" })
     const [message, setMessage] = useState("")
-
+    // Handle Data Changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevData) => ({
@@ -11,12 +11,15 @@ function Contact() {
             [name]: value,
         }))
     }
-    // Mock a Submission Event
+    // Mock Submission Event
     const handleSubmit = (e) => {
         e.preventDefault();
         setData({ name: "", email: "", message: "" })
         setMessage("Message sent!")
     }
+    // Preventing the default form submission behavior avoids a page reload, enabling a smoother user experience.
+    // Resetting the form data after submission provides immediate feedback to the user that the form has been cleared.
+    // Setting a success message gives the user confirmation that their message was sent.
 
     return (
         <main>

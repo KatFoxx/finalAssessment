@@ -7,7 +7,7 @@ const Navbar = () => {
     const [user, setUser] = useState(null);
     const [cookies, , removeCookie] = useCookies(['user']);
     const navigate = useNavigate();
-
+    // Checks if user is logged in
     useEffect(() => {
         const user = cookies.user;
         if (user) {
@@ -16,9 +16,9 @@ const Navbar = () => {
     }, [cookies]);
 
     const handleLogout = () => {
-        removeCookie('user', { path: '/' }); // Ensure the correct path is used
+        removeCookie('user', { path: '/' }); 
         setUser(null);
-        navigate('/'); // Redirect to the homepage (or login)
+        navigate('/'); // Redirect to the Home component
     };
 
     return (

@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+// new mongoose model for workouts
+
 const WorkoutSchema = new mongoose.Schema({
     title:       { type: String, required: true },
     description: { type: String },

@@ -16,18 +16,18 @@ function Register() {
     const [message, setMessage] = useState("")
     const navigate = useNavigate();
 
-
+    // handle the duplicate Password Change
     const handlePass = (e) => {
         setRepeatPass(e.target.value)
     }
-
+    // handle Change in the Form Data
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevData) => ({
             ...prevData, [name]: value,
         }));
     };
-
+    // Handle Submission, preventing default behaviour, creating a new user, persisting to the DB and logging in.
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (repeatPass !== data.password) {

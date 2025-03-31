@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async"
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 function Register() {
@@ -64,6 +65,17 @@ function Register() {
     }
     return (
         <main>
+            <Helmet>
+                <title>Register - HealthifyMe</title>
+                <meta
+                    name="description"
+                    content="Create an account on HealthifyMe. Register with your name, email, username, and password to start your fitness journey."
+                />
+                <meta
+                    name="keywords"
+                    content="register, sign up, HealthifyMe, fitness app, create account"
+                />
+            </Helmet>
             <form aria-label="Register User Form" onSubmit={handleSubmit}>
                 <label htmlFor="name">Name:</label>
                 <input type="text" id="name" name="name" onChange={handleChange} value={data.name}></input>

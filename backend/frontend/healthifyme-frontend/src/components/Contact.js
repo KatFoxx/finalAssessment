@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 function Contact() {
     const [data, setData] = useState({ name: "", email: "", message: "" })
@@ -23,6 +24,17 @@ function Contact() {
 
     return (
         <main>
+            <Helmet>
+                <title>Contact Us - HealthifyMe</title>
+                <meta
+                    name="description"
+                    content="Get in touch with HealthifyMe. Send us your questions, feedback, or inquiries through our contact form."
+                />
+                <meta
+                    name="keywords"
+                    content="HealthifyMe, contact, support, customer service, inquiries, feedback"
+                />
+            </Helmet>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Name:</label>
                 <input type="text" name="name" id="name" placeholder="Your Name" value={data.name} onChange={handleChange}></input>

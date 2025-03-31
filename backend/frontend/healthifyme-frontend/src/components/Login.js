@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie'
+import { Helmet } from "react-helmet-async"
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 
@@ -40,6 +41,17 @@ function Login() {
 
     return (
         <main>
+            <Helmet>
+                <title>Login - HealthifyMe</title>
+                <meta
+                    name="description"
+                    content="Log in to your HealthifyMe account to track workouts, manage exercises, and stay fit."
+                />
+                <meta
+                    name="keywords"
+                    content="login, HealthifyMe, fitness app, user login, sign in"
+                />
+            </Helmet>
             <form name="loginForm" aria-label="Login Form" onSubmit={handleSubmit}>
                 <label htmlFor="username">Username:</label>
                 <input type="text" id="username" name="username" value={data.username} onChange={handleChange}></input>

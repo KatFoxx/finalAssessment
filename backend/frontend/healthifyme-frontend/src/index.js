@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { CookiesProvider } from "react-cookie";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { HelmetProvider } from "react-helmet-async"
 import store from './redux/store';
 import './index.css';
 import App from './App';
@@ -11,13 +12,15 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <CookiesProvider>
-          <App />
-        </CookiesProvider>
-      </BrowserRouter>
-    </Provider>
+    <HelmetProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <CookiesProvider>
+            <App />
+          </CookiesProvider>
+        </BrowserRouter>
+      </Provider>
+    </HelmetProvider>
   </React.StrictMode>
 );
 
